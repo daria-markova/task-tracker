@@ -1,11 +1,29 @@
 package main;
 
 public class Task {
-    String title;
-    boolean isDone;
+    private int id;
+    private String title;
+    private boolean done;
 
-    public Task (String title) {
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public Task (int id, String title) {
+        this.id = id;
         this.title = title;
-        this.isDone = false;
+        this.done = false;
+    }
+
+    public void markDone() {
+        this.done = true;
     }
 }
