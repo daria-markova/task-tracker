@@ -20,7 +20,7 @@ public class TaskService {
         System.out.println("\n--- Задачи ---");
 
         for (Task task : tasks) {
-            String status = task.isDone() ? "Выполнено ✓" : "В процессе";
+            String status = task.isDone() ? "Выполнено" : "В процессе";
             System.out.println(
                     "ID: " + task.getId() + " | " + task.getTitle() + " | " + status
             );
@@ -28,15 +28,30 @@ public class TaskService {
         System.out.println("-------------\n");
     }
 
-    public void markDone(int index) {
-        if (index >= 0 && index < tasks.size()) {
-            tasks.get(index).markDone();
+    public void markDone(int id) {
+        Task task = findTaskById(id);
+
+        if (task != null) {
+            task.markDone();
         }
     }
 
-    public void deleteTask(int index) {
-        if (index >= 0 && index < tasks.size()) {
-            tasks.remove(index);
-        }
+    public void deleteTask(int id) {
+       Task task = findTaskById(id);
+
+       if (task != null) {
+           tasks.remove(task);
+       }
     }
+
+    private Task findTaskById(int id) {
+        for (Task task : tasks) {
+            if (task.getId() == id) {
+                return task;
+            }
+        }
+        return null;
+    }
+
+
 }
