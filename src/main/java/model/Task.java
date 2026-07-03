@@ -1,9 +1,20 @@
 package model;
+import model.enums.Priority;
+import model.enums.Status;
 
 public class Task {
     private int id;
     private String title;
-    private boolean done;
+    private Status status;
+    private Priority priority;
+
+
+    public Task (int id, String title) {
+        this.id = id;
+        this.title = title;
+        this.status = Status.TODO;
+        this.priority = Priority.MEDIUM;
+    }
 
     public int getId() {
         return id;
@@ -13,17 +24,20 @@ public class Task {
         return title;
     }
 
-    public boolean isDone() {
-        return done;
+    public Status getStatus() {
+        return status;
     }
 
-    public Task (int id, String title) {
-        this.id = id;
-        this.title = title;
-        this.done = false;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
-    public void markDone() {
-        this.done = true;
+    public Priority getPriority() {
+        return priority;
     }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
 }

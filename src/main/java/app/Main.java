@@ -1,5 +1,6 @@
 package app;
 
+import model.enums.Priority;
 import service.TaskService;
 
 import java.util.Scanner;
@@ -10,11 +11,12 @@ public class Main {
         TaskService service = new TaskService();
 
         while (true) {
-            System.out.println("\n1 - Добавить задачу");
-            System.out.println("2 - Показать задачи");
-            System.out.println("3 - Выполнено");
-            System.out.println("4 - Удалить задачу");
-            System.out.println("0 - Выход");
+            System.out.println("\n1 - Enter task");
+            System.out.println("2 - Show tasks");
+            System.out.println("3 - Start task");
+            System.out.println("4 - Mark as done");
+            System.out.println("5 - Delete task");
+            System.out.println("0 - Exit");
 
 
             int choice = scanner.nextInt();
@@ -22,9 +24,26 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.println("Введите задачу: ");
+                    System.out.println("Enter task title:");
                     String title = scanner.nextLine();
-                    service.addTask(title);
+
+                    System.out.println("Select priority:");
+                    System.out.println("1 - Low");
+                    System.out.println("2 - Medium");
+                    System.out.println("3 - High");
+
+                    int pr = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Priority priority;
+
+                    switch (pr) {
+                        case 1 -> priority = Priority.LOW;
+                        case 3 -> priority = Priority.HIGH;
+                        default -> priority = Priority.MEDIUM;
+                    }
+
+                    service.addTask(title, priority);
                     break;
 
                 case 2:
@@ -32,22 +51,26 @@ public class Main {
                     break;
 
                 case 3:
-                    System.out.println("Введите номер задачи: ");
-                    int doneIndex = scanner.nextInt();
-                    service.markDone(doneIndex);
+                    System.out.println("Enter task id to start:");
+                    int startId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    service.startTask(startId);
                     break;
 
                 case 4:
-                    System.out.println("Введите номер задачи: ");
-                    int deleteIndex = scanner.nextInt();
-                    service.deleteTask(deleteIndex);
+                    System.out.println("Enter task id to delete: ");
+                    int deleteId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    service.deleteTask(deleteId);
                     break;
 
                 case 0:
                     return;
 
                 default:
-                    System.out.println("Неверный ввод");
+                    System.out.println("Incorrect input");
             }
         }
     }
