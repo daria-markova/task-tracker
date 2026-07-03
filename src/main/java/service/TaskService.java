@@ -1,4 +1,6 @@
-package main;
+package service;
+
+import model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +39,11 @@ public class TaskService {
     }
 
     public void deleteTask(int id) {
-       Task task = findTaskById(id);
+        Task task = findTaskById(id);
 
-       if (task != null) {
-           tasks.remove(task);
-       }
+        if (task != null) {
+            tasks.remove(task);
+        }
     }
 
     private Task findTaskById(int id) {
@@ -55,3 +57,4 @@ public class TaskService {
 
 
 }
+

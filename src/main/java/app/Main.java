@@ -1,4 +1,6 @@
-package main;
+package app;
+
+import service.TaskService;
 
 import java.util.Scanner;
 
