@@ -27,15 +27,11 @@ public class TaskService {
         System.out.println("\n================ TASK LIST ================\n");
 
         for (Task task : tasks) {
-            System.out.println("------------------------------------------");
-            System.out.println("ID: " + task.getId());
-            System.out.println("Title: " + task.getTitle());
-            System.out.println("Status: " + formatStatus(task.getStatus()));
-            System.out.println("Priority: " + task.getPriority());
+            printTask(task);
         }
 
         System.out.println("------------------------------------------\n");
-        }
+    }
 
     private String formatStatus(Status status) {
         return switch (status) {
@@ -48,12 +44,19 @@ public class TaskService {
     public void startTask(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
+
+                if (task.getStatus() == Status.DONE) {
+                    System.out.println("Task is already completed");
+                    return;
+                }
+
                 task.setStatus(Status.IN_PROGRESS);
                 System.out.println("Task started");
                 return;
             }
         }
-        System.out.println("Task is not found");
+
+        System.out.println("Task not found");
     }
 
     public void markDone(int id) {
@@ -64,7 +67,7 @@ public class TaskService {
                 return;
             }
         }
-        System.out.println("Task is not found");
+        System.out.println("Task not found");
     }
 
     public void deleteTask(int id) {
@@ -81,7 +84,7 @@ public class TaskService {
             tasks.remove(taskToDelete);
             System.out.println("Task deleted");
         } else {
-            System.out.println("Task is not found");
+            System.out.println("Task not found");
         }
     }
 
@@ -93,7 +96,29 @@ public class TaskService {
         }
         return null;
     }
+    public void showByStatus(Status status) {
+        for (Task task : tasks) {
+            if (task.getStatus() == status) {
+                printTask(task);
+            }
+        }
+    }
 
+    public void showByPriority(Priority priority) {
+        for (Task task : tasks) {
+            if (task.getPriority() == priority) {
+                printTask(task);
+            }
+        }
+    }
+
+    private void printTask(Task task) {
+        System.out.println("------------------------------------------");
+        System.out.println("ID: " + task.getId());
+        System.out.println("Title: " + task.getTitle());
+        System.out.println("Status: " + formatStatus(task.getStatus()));
+        System.out.println("Priority: " + task.getPriority());
+    }
 
 }
 
