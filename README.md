@@ -1,8 +1,7 @@
 # Task Tracker (Java Console App)
 
 ## 
-A console-based task management application that allows users to create, update, delete, and track tasks. The project demonstrates core backend development principles and object-oriented programming concepts.
-
+A console-based task management application that allows users to create, update, delete, and track tasks. The project demonstrates object-oriented programming principles, clean architecture, and backend development fundamentals.
 ## Features
 - Add new tasks
 - Mark tasks as in progress
