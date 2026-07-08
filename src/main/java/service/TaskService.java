@@ -1,21 +1,34 @@
 package service;
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import model.Task;
 import model.enums.Priority;
 import model.enums.Status;
-import model.enums.Status;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.io.File;
+import java.io.IOException;
+
+
 
 public class TaskService {
     int nextId = 1;
     List<Task> tasks = new ArrayList<>();
 
-    public void addTask(String title, Priority priority) {
+    public void addTask(String title, Priority priority, LocalDate deadline) {
         tasks.add(new Task(nextId, title));
+
         Task task = tasks.get(tasks.size() - 1);
         task.setPriority(priority);
+        task.setDeadline(deadline);
+        saveTasks();
         nextId++;
+
     }
 
     public void printTasks() {
@@ -51,9 +64,11 @@ public class TaskService {
                 }
 
                 task.setStatus(Status.IN_PROGRESS);
+                saveTasks();
                 System.out.println("Task started");
                 return;
             }
+
         }
 
         System.out.println("Task not found");
@@ -63,6 +78,7 @@ public class TaskService {
         for (Task task : tasks) {
             if (task.getId() == id) {
                 task.setStatus(Status.DONE);
+                saveTasks();
                 System.out.println("Task marked as DONE");
                 return;
             }
@@ -82,6 +98,7 @@ public class TaskService {
 
         if (taskToDelete != null) {
             tasks.remove(taskToDelete);
+            saveTasks();
             System.out.println("Task deleted");
         } else {
             System.out.println("Task not found");
@@ -118,7 +135,49 @@ public class TaskService {
         System.out.println("Title: " + task.getTitle());
         System.out.println("Status: " + formatStatus(task.getStatus()));
         System.out.println("Priority: " + task.getPriority());
+        if (task.getDeadline() != null) {
+            System.out.println("Deadline: " + task.getDeadline());
+        } else {
+            System.out.println("Deadline: not set");
+        }
     }
 
+    public void searchByTitle(String keyword) {
+        boolean found = false;
+
+        for (Task task : tasks) {
+            if (task.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                printTask(task);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No tasks found for: " + keyword);
+        }
+    }
+
+    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final File file = new File("tasks.json");
+
+    public void saveTasks() {
+        try {
+            mapper.writeValue(file, tasks);
+        } catch (IOException e) {
+            System.out.println("Error while saving tasks: " + e.getMessage());
+        }
+    }
+
+    public void loadTasks() {
+        try {
+            if (file.exists()) {
+                tasks = mapper.readValue(file, new TypeReference<List<Task>>() {});
+            } else {
+                tasks = new ArrayList<>();
+            }
+        } catch (IOException e) {
+            System.out.println("Error while loading tasks: " + e.getMessage());
+            tasks = new ArrayList<>();
+        }
+    }
 }
 

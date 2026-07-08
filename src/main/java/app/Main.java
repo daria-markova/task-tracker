@@ -4,12 +4,15 @@ import model.enums.Priority;
 import model.enums.Status;
 import service.TaskService;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         TaskService service = new TaskService();
+
+        service.loadTasks();
 
         while (true) {
             System.out.println("\n===== TASK TRACKER =====");
@@ -22,6 +25,7 @@ public class Main {
             System.out.println("7 - Show in progress tasks");
             System.out.println("8 - Show done tasks");
             System.out.println("9 - Show High priority tasks");
+            System.out.println("10 - Search tasks by title");
             System.out.println("0 - Exit");
 
 
@@ -39,6 +43,8 @@ public class Main {
                             System.out.println("2 - Medium");
                             System.out.println("3 - High");
 
+
+
                             int pr = scanner.nextInt();
                             scanner.nextLine();
 
@@ -50,7 +56,10 @@ public class Main {
                                 default -> priority = Priority.MEDIUM;
                             }
 
-                            service.addTask(title, priority);
+                            System.out.println("Enter deadline (yyyy-MM-dd):");
+                            LocalDate deadline = LocalDate.parse(scanner.nextLine());
+
+                            service.addTask(title, priority, deadline);
                             break;
 
                         case 2:
@@ -95,6 +104,13 @@ public class Main {
 
                         case 9:
                             service.showByPriority(Priority.HIGH);
+                            break;
+
+                        case 10:
+                            System.out.println("Enter keyword:");
+                            String keyword = scanner.nextLine();
+
+                            service.searchByTitle(keyword);
                             break;
 
                         case 0:

@@ -2,12 +2,16 @@ package model;
 import model.enums.Priority;
 import model.enums.Status;
 
+import java.time.LocalDate;
+
 public class Task {
     private int id;
     private String title;
     private Status status;
     private Priority priority;
 
+    public Task() {
+    }
 
     public Task (int id, String title) {
         this.id = id;
@@ -40,4 +44,14 @@ public class Task {
         this.priority = priority;
     }
 
+    private LocalDate deadline;
+
+    public LocalDate getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
+
+    }
 }
