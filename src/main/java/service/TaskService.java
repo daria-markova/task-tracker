@@ -55,49 +55,43 @@ public class TaskService {
     }
 
     public void startTask(int id) {
-        for (Task task : tasks) {
-            if (task.getId() == id) {
+        Task task = findTaskById(id);
 
-                if (task.getStatus() == Status.DONE) {
-                    System.out.println("Task is already completed");
-                    return;
-                }
-
-                task.setStatus(Status.IN_PROGRESS);
-                saveTasks();
-                System.out.println("Task started");
-                return;
-            }
-
+        if (task == null) {
+            System.out.println("Task not found");
+            return;
         }
 
-        System.out.println("Task not found");
+        if (task.getStatus() == Status.DONE) {
+            System.out.println("Task is already completed");
+            return;
+        }
+
+        task.setStatus(Status.IN_PROGRESS);
+        saveTasks();
+        System.out.println("Task started");
     }
 
     public void markDone(int id) {
-        for (Task task : tasks) {
-            if (task.getId() == id) {
-                task.setStatus(Status.DONE);
-                saveTasks();
-                System.out.println("Task marked as DONE");
-                return;
-            }
+        Task task = findTaskById(id);
+
+        if (task != null) {
+            task.setStatus(Status.DONE);
+            saveTasks();
+
+            System.out.println("Task marked as done");
+
+        } else {
+            System.out.println("Task not found");
+
         }
-        System.out.println("Task not found");
     }
 
     public void deleteTask(int id) {
-        Task taskToDelete = null;
+        Task task = findTaskById(id);
 
-        for (Task task : tasks) {
-            if (task.getId() == id) {
-                taskToDelete = task;
-                break;
-            }
-        }
-
-        if (taskToDelete != null) {
-            tasks.remove(taskToDelete);
+        if (task != null) {
+            tasks.remove(task);
             saveTasks();
             System.out.println("Task deleted");
         } else {
@@ -113,6 +107,7 @@ public class TaskService {
         }
         return null;
     }
+
     public void showByStatus(Status status) {
         for (Task task : tasks) {
             if (task.getStatus() == status) {
@@ -154,6 +149,15 @@ public class TaskService {
         if (!found) {
             System.out.println("No tasks found for: " + keyword);
         }
+    }
+
+    public void showOverdueTasks() {
+        for (Task task : tasks) {
+            if (task.getDeadline() != null && task.getDeadline().isBefore(LocalDate.now()) && task.getStatus() != Status.DONE) {
+                printTask(task);
+            }
+        }
+
     }
 
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());

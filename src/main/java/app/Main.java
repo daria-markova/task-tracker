@@ -26,6 +26,7 @@ public class Main {
             System.out.println("8 - Show done tasks");
             System.out.println("9 - Show High priority tasks");
             System.out.println("10 - Search tasks by title");
+            System.out.println("11 - Show overdue tasks");
             System.out.println("0 - Exit");
 
 
@@ -111,6 +112,10 @@ public class Main {
                             String keyword = scanner.nextLine();
 
                             service.searchByTitle(keyword);
+                            break;
+
+                        case 11:
+                            service.showOverdueTasks();
                             break;
 
                         case 0:
