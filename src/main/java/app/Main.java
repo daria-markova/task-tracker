@@ -26,6 +26,8 @@ public class Main {
             System.out.println("8 - Show done tasks");
             System.out.println("9 - Show High priority tasks");
             System.out.println("10 - Search tasks by title");
+            System.out.println("11 - Show overdue tasks");
+            System.out.println("12 - Edit task");
             System.out.println("0 - Exit");
 
 
@@ -111,6 +113,37 @@ public class Main {
                             String keyword = scanner.nextLine();
 
                             service.searchByTitle(keyword);
+                            break;
+
+                        case 11:
+                            service.showOverdueTasks();
+                            break;
+
+                        case 12:
+                            System.out.println("Enter task id to edit:");
+                            int editId = scanner.nextInt();
+                            scanner.nextLine();
+
+                            System.out.println("Enter new title:");
+                            String newTitle = scanner.nextLine();
+
+                            System.out.println("Select priority:");
+                            System.out.println("1 - Low");
+                            System.out.println("2 - Medium");
+                            System.out.println("3 - High");
+
+                            int newPr = scanner.nextInt();
+                            scanner.nextLine();
+
+                            Priority newPriority;
+
+                            switch (newPr) {
+                                case 1 -> newPriority = Priority.LOW;
+                                case 3 -> newPriority = Priority.HIGH;
+                                default -> newPriority = Priority.MEDIUM;
+                            }
+
+                            service.editTask(editId, newTitle, newPriority);
                             break;
 
                         case 0:

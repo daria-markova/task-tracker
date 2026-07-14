@@ -179,5 +179,30 @@ public class TaskService {
             tasks = new ArrayList<>();
         }
     }
+
+    public void editTask(int id, String newTitle, Priority newPriority) {
+
+        Task task = findTaskById(id);
+
+        if (task == null) {
+            System.out.println("Task not found");
+            return;
+        }
+
+        task.setTitle(newTitle);
+        task.setPriority(newPriority);
+
+        saveTasks();
+
+        System.out.println("Task updated");
+    }
+
+    public void showOverdueTasks() {
+        for (Task task : tasks) {
+            if (task.getDeadline() != null && task.getDeadline().isBefore(LocalDate.now()) && task.getStatus() != Status.DONE) {
+                printTask(task);
+            }
+        }
+    }
 }
 

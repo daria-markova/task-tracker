@@ -54,4 +54,8 @@ public class Task {
         this.deadline = deadline;
 
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }
