@@ -37,32 +37,7 @@ public class Main {
 
                     switch (choice) {
                         case 1:
-                            System.out.println("Enter task title:");
-                            String title = scanner.nextLine();
-
-                            System.out.println("Select priority:");
-                            System.out.println("1 - Low");
-                            System.out.println("2 - Medium");
-                            System.out.println("3 - High");
-
-
-
-                            int pr = scanner.nextInt();
-                            scanner.nextLine();
-
-                            Priority priority;
-
-                            switch (pr) {
-                                case 1 -> priority = Priority.LOW;
-                                case 3 -> priority = Priority.HIGH;
-                                default -> priority = Priority.MEDIUM;
-                            }
-
-                            System.out.println("Enter deadline (yyyy-MM-dd):");
-                            LocalDate deadline = LocalDate.parse(scanner.nextLine());
-
-                            service.addTask(title, priority, deadline);
-                            break;
+                            Priority priority = readPriority(scanner);
 
                         case 2:
                             service.printTasks();
@@ -120,31 +95,7 @@ public class Main {
                             break;
 
                         case 12:
-                            System.out.println("Enter task id to edit:");
-                            int editId = scanner.nextInt();
-                            scanner.nextLine();
-
-                            System.out.println("Enter new title:");
-                            String newTitle = scanner.nextLine();
-
-                            System.out.println("Select priority:");
-                            System.out.println("1 - Low");
-                            System.out.println("2 - Medium");
-                            System.out.println("3 - High");
-
-                            int newPr = scanner.nextInt();
-                            scanner.nextLine();
-
-                            Priority newPriority;
-
-                            switch (newPr) {
-                                case 1 -> newPriority = Priority.LOW;
-                                case 3 -> newPriority = Priority.HIGH;
-                                default -> newPriority = Priority.MEDIUM;
-                            }
-
-                            service.editTask(editId, newTitle, newPriority);
-                            break;
+                            Priority newPriority = readPriority(scanner);
 
                         case 0:
                             return;
@@ -155,5 +106,22 @@ public class Main {
 
             }
         }
+
+    private static Priority readPriority(Scanner scanner) {
+
+        System.out.println("Select priority:");
+        System.out.println("1 - Low");
+        System.out.println("2 - Medium");
+        System.out.println("3 - High");
+
+        int pr = scanner.nextInt();
+        scanner.nextLine();
+
+        return switch (pr) {
+            case 1 -> Priority.LOW;
+            case 3 -> Priority.HIGH;
+            default -> Priority.MEDIUM;
+        };
+    }
     }
 
