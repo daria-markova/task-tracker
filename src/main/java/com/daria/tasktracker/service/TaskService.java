@@ -1,24 +1,29 @@
-package service;
+package com.daria.tasktracker.service;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import model.Task;
-import model.enums.Priority;
-import model.enums.Status;
+import com.daria.tasktracker.model.Task;
+import com.daria.tasktracker.model.enums.Priority;
+import com.daria.tasktracker.model.enums.Status;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 
 
-
+@Service
 public class TaskService {
     int nextId = 1;
     List<Task> tasks = new ArrayList<>();
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
 
     public void addTask(String title, Priority priority, LocalDate deadline) {
         tasks.add(new Task(nextId, title));
@@ -105,7 +110,7 @@ public class TaskService {
         }
     }
 
-    private Task findTaskById(int id) {
+    public Task findTaskById(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
                 return task;

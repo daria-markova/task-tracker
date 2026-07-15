@@ -1,10 +1,9 @@
 package app;
 
-import model.enums.Priority;
-import model.enums.Status;
-import service.TaskService;
+import com.daria.tasktracker.model.enums.Priority;
+import com.daria.tasktracker.model.enums.Status;
+import com.daria.tasktracker.service.TaskService;
 
-import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {

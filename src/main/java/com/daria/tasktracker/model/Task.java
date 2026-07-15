@@ -1,6 +1,6 @@
-package model;
-import model.enums.Priority;
-import model.enums.Status;
+package com.daria.tasktracker.model;
+import com.daria.tasktracker.model.enums.Priority;
+import com.daria.tasktracker.model.enums.Status;
 
 import java.time.LocalDate;
 
