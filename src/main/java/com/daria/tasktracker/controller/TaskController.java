@@ -1,6 +1,7 @@
 package com.daria.tasktracker.controller;
 
 import com.daria.tasktracker.dto.CreateTaskRequest;
+import com.daria.tasktracker.dto.UpdateTaskRequest;
 import com.daria.tasktracker.model.Task;
 import org.springframework.web.bind.annotation.*;
 import com.daria.tasktracker.service.TaskService;
@@ -29,6 +30,23 @@ public class TaskController {
     @PostMapping("/tasks")
     public Task createTask(@RequestBody CreateTaskRequest request) {
         return taskService.addTask(request.getTitle(), request.getPriority(), request.getDeadline());
+    }
+
+    @DeleteMapping("/tasks/{id}")
+    public void deleteTask(@PathVariable int id) {
+        taskService.deleteTask(id);
+    }
+
+    @PutMapping("/tasks/{id}")
+    public Task updateTask(
+            @PathVariable int id,
+            @RequestBody UpdateTaskRequest request
+    ) {
+        return taskService.editTask(
+                id,
+                request.getTitle(),
+                request.getPriority()
+        );
     }
 
 }

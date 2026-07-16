@@ -187,13 +187,12 @@ public class TaskService {
         }
     }
 
-    public void editTask(int id, String newTitle, Priority newPriority) {
+    public Task editTask(int id, String newTitle, Priority newPriority) {
 
         Task task = findTaskById(id);
 
         if (task == null) {
-            System.out.println("Task not found");
-            return;
+            return null;
         }
 
         task.setTitle(newTitle);
@@ -201,7 +200,7 @@ public class TaskService {
 
         saveTasks();
 
-        System.out.println("Task updated");
+        return task;
     }
 
     public void showOverdueTasks() {
