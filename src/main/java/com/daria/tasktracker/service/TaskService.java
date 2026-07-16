@@ -25,7 +25,7 @@ public class TaskService {
         return tasks;
     }
 
-    public void addTask(String title, Priority priority, LocalDate deadline) {
+    public Task addTask(String title, Priority priority, LocalDate deadline) {
         tasks.add(new Task(nextId, title));
 
         Task task = tasks.get(tasks.size() - 1);
@@ -33,6 +33,8 @@ public class TaskService {
         task.setDeadline(deadline);
         saveTasks();
         nextId++;
+
+        return task;
 
     }
 
