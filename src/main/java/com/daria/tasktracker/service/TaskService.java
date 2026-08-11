@@ -93,7 +93,7 @@ public class TaskService {
         System.out.println("Task not found");
     }
 
-    public void deleteTask(int id) {
+    public boolean deleteTask(int id) {
         Task taskToDelete = null;
 
         for (Task task : tasks) {
@@ -107,8 +107,10 @@ public class TaskService {
             tasks.remove(taskToDelete);
             saveTasks();
             System.out.println("Task deleted");
+            return true;
         } else {
             System.out.println("Task not found");
+            return false;
         }
     }
 

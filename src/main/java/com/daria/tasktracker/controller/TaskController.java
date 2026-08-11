@@ -3,6 +3,8 @@ package com.daria.tasktracker.controller;
 import com.daria.tasktracker.dto.CreateTaskRequest;
 import com.daria.tasktracker.dto.UpdateTaskRequest;
 import com.daria.tasktracker.model.Task;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.daria.tasktracker.service.TaskService;
 
@@ -23,30 +25,44 @@ public class TaskController {
     }
 
     @GetMapping("/tasks/{id}")
-    public Task getTaskById(@PathVariable int id) {
-        return taskService.findTaskById(id);
+    public ResponseEntity<Task> getTaskById(@PathVariable int id) {
+
+        Task task = taskService.findTaskById(id);
+
+        if (task == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(task);
     }
 
     @PostMapping("/tasks")
-    public Task createTask(@RequestBody CreateTaskRequest request) {
-        return taskService.addTask(request.getTitle(), request.getPriority(), request.getDeadline());
+    public ResponseEntity<Task> createTask(@RequestBody CreateTaskRequest request) {
+
+        Task task = taskService.addTask(request.getTitle(), request.getPriority(), request.getDeadline()
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(task);
     }
 
     @DeleteMapping("/tasks/{id}")
-    public void deleteTask(@PathVariable int id) {
-        taskService.deleteTask(id);
+    public ResponseEntity<Void> deleteTask(@PathVariable int id) {
+        boolean deleted = taskService.deleteTask(id);
+
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/tasks/{id}")
-    public Task updateTask(
-            @PathVariable int id,
-            @RequestBody UpdateTaskRequest request
-    ) {
-        return taskService.editTask(
-                id,
-                request.getTitle(),
-                request.getPriority()
-        );
+    public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody UpdateTaskRequest request) {
+        Task task = taskService.editTask(id, request.getTitle(), request.getPriority());
+
+        if (task == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(task);
     }
 
 }
