@@ -122,12 +122,15 @@ public class TaskService {
         }
         return null;
     }
-    public void showByStatus(Status status) {
+    public List<Task> showByStatus(Status status) {
+        List<Task> result = new ArrayList<>();
+
         for (Task task : tasks) {
             if (task.getStatus() == status) {
-                printTask(task);
+                result.add(task);
             }
         }
+        return result;
     }
 
     public void showByPriority(Priority priority) {
