@@ -48,6 +48,11 @@ public class TaskController {
         return taskService.showByPriority(priority);
     }
 
+    @GetMapping("/tasks/search")
+    public List<Task> searchTasks(@RequestParam String keyword) {
+        return taskService.searchByTitle(keyword);
+    }
+
         @PostMapping("/tasks")
     public ResponseEntity<Task> createTask(@RequestBody CreateTaskRequest request) {
 

@@ -158,18 +158,15 @@ public class TaskService {
         }
     }
 
-    public void searchByTitle(String keyword) {
-        boolean found = false;
+    public List<Task> searchByTitle(String keyword) {
+        List<Task> result = new ArrayList<>();
 
         for (Task task : tasks) {
             if (task.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
-                printTask(task);
-                found = true;
+                result.add(task);
             }
         }
-        if (!found) {
-            System.out.println("No tasks found for: " + keyword);
-        }
+            return result;
     }
 
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
