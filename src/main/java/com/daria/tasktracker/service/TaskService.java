@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -133,12 +134,15 @@ public class TaskService {
         return result;
     }
 
-    public void showByPriority(Priority priority) {
+    public List<Task> showByPriority(Priority priority) {
+        List<Task> result = new ArrayList<>();
+
         for (Task task : tasks) {
             if (task.getPriority() == priority) {
-                printTask(task);
+                result.add(task);
             }
         }
+        return result;
     }
 
     private void printTask(Task task) {
@@ -179,6 +183,7 @@ public class TaskService {
         }
     }
 
+    @PostConstruct
     public void loadTasks() {
         try {
             if (file.exists()) {

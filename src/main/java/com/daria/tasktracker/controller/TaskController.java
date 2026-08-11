@@ -3,6 +3,7 @@ package com.daria.tasktracker.controller;
 import com.daria.tasktracker.dto.CreateTaskRequest;
 import com.daria.tasktracker.dto.UpdateTaskRequest;
 import com.daria.tasktracker.model.Task;
+import com.daria.tasktracker.model.enums.Priority;
 import com.daria.tasktracker.model.enums.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,11 @@ public class TaskController {
     @GetMapping("/tasks/status/{status}")
     public List<Task> getTasksByStatus(@PathVariable Status status) {
         return taskService.showByStatus(status);
+    }
+
+    @GetMapping("/tasks/priority/{priority}")
+    public List<Task> getTasksByPriority(@PathVariable Priority priority) {
+        return taskService.showByPriority(priority);
     }
 
         @PostMapping("/tasks")
