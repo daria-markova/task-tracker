@@ -53,6 +53,11 @@ public class TaskController {
         return taskService.searchByTitle(keyword);
     }
 
+    @GetMapping("/tasks/overdue")
+    public List<Task> getOverdueTasks() {
+        return taskService.showOverdueTasks();
+    }
+
         @PostMapping("/tasks")
     public ResponseEntity<Task> createTask(@RequestBody CreateTaskRequest request) {
 
@@ -80,6 +85,11 @@ public class TaskController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(task);
+    }
+
+    @PutMapping("/tasks/{id}/complete")
+    public void completeTask(@PathVariable int id) {
+        taskService.markDone(id);
     }
 
 }

@@ -210,12 +210,14 @@ public class TaskService {
         return task;
     }
 
-    public void showOverdueTasks() {
+    public List<Task> showOverdueTasks() {
+        List<Task> result = new ArrayList<>();
+
         for (Task task : tasks) {
-            if (task.getDeadline() != null && task.getDeadline().isBefore(LocalDate.now()) && task.getStatus() != Status.DONE) {
-                printTask(task);
+            if (task.getDeadline() != null && task.getDeadline().isBefore(LocalDate.now()) && task.getStatus() != Status.DONE) {result.add(task);
             }
         }
+        return result;
     }
 }
 
