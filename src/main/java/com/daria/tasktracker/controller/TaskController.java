@@ -92,4 +92,19 @@ public class TaskController {
         taskService.markDone(id);
     }
 
+    @PutMapping("/tasks/{id}/start")
+    public ResponseEntity<Void> startTask(@PathVariable int id) {
+        Task task = taskService.startTask(id);
+
+        if (task == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (task.getStatus() == Status.DONE) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
 }

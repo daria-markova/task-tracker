@@ -62,25 +62,25 @@ public class TaskService {
         };
     }
 
-    public boolean startTask(int id) {
+    public Task startTask(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
 
                 if (task.getStatus() == Status.DONE) {
                     System.out.println("Task is already completed");
-                    return false;
+                    return task;
                 }
 
                 task.setStatus(Status.IN_PROGRESS);
                 saveTasks();
                 System.out.println("Task started");
-                return true;
+                return task;
             }
 
         }
 
         System.out.println("Task not found");
-        return false;
+        return null;
     }
 
     public void markDone(int id) {
