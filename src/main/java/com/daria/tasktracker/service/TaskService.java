@@ -67,19 +67,16 @@ public class TaskService {
             if (task.getId() == id) {
 
                 if (task.getStatus() == Status.DONE) {
-                    System.out.println("Task is already completed");
                     return task;
                 }
 
                 task.setStatus(Status.IN_PROGRESS);
                 saveTasks();
-                System.out.println("Task started");
                 return task;
             }
 
         }
 
-        System.out.println("Task not found");
         return null;
     }
 
