@@ -62,24 +62,25 @@ public class TaskService {
         };
     }
 
-    public void startTask(int id) {
+    public boolean startTask(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
 
                 if (task.getStatus() == Status.DONE) {
                     System.out.println("Task is already completed");
-                    return;
+                    return false;
                 }
 
                 task.setStatus(Status.IN_PROGRESS);
                 saveTasks();
                 System.out.println("Task started");
-                return;
+                return true;
             }
 
         }
 
         System.out.println("Task not found");
+        return false;
     }
 
     public void markDone(int id) {
@@ -185,6 +186,9 @@ public class TaskService {
         try {
             if (file.exists()) {
                 tasks = mapper.readValue(file, new TypeReference<List<Task>>() {});
+                if (!tasks.isEmpty()) {
+                    nextId = tasks.stream().mapToInt(Task::getId).max().orElse(0) + 1;
+                }
             } else {
                 tasks = new ArrayList<>();
             }
