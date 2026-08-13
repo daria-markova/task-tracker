@@ -1,5 +1,6 @@
 package com.daria.tasktracker.service;
 
+import com.daria.tasktracker.exception.TaskNotFoundException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.daria.tasktracker.model.Task;
 import com.daria.tasktracker.model.enums.Priority;
@@ -119,8 +120,9 @@ public class TaskService {
                 return task;
             }
         }
-        return null;
+        throw new TaskNotFoundException("Task not found");
     }
+    
     public List<Task> showByStatus(Status status) {
         List<Task> result = new ArrayList<>();
 
