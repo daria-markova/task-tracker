@@ -92,7 +92,7 @@ public class TaskService {
         throw new TaskNotFoundException("Task not found");
     }
 
-    public boolean deleteTask(int id) {
+    public Task deleteTask(int id) {
         Task taskToDelete = null;
 
         for (Task task : tasks) {
@@ -105,11 +105,9 @@ public class TaskService {
         if (taskToDelete != null) {
             tasks.remove(taskToDelete);
             saveTasks();
-            System.out.println("Task deleted");
-            return true;
+            return taskToDelete;
         } else {
-            System.out.println("Task not found");
-            return false;
+            throw new TaskNotFoundException("Task not found");
         }
     }
 
