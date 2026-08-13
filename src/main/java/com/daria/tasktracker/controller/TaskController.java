@@ -82,8 +82,10 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{id}/complete")
-    public void completeTask(@PathVariable int id) {
-        taskService.markDone(id);
+    public ResponseEntity<Task> completeTask(@PathVariable int id) {
+        Task task = taskService.markDone(id);
+
+        return ResponseEntity.ok(task);
     }
 
     @PutMapping("/tasks/{id}/start")

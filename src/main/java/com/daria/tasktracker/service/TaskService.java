@@ -81,16 +81,15 @@ public class TaskService {
         return null;
     }
 
-    public void markDone(int id) {
+    public Task markDone(int id) {
         for (Task task : tasks) {
             if (task.getId() == id) {
                 task.setStatus(Status.DONE);
                 saveTasks();
-                System.out.println("Task marked as DONE");
-                return;
+                return task;
             }
         }
-        System.out.println("Task not found");
+        throw new TaskNotFoundException("Task not found");
     }
 
     public boolean deleteTask(int id) {
