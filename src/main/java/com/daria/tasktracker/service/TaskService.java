@@ -198,10 +198,6 @@ public class TaskService {
 
         Task task = findTaskById(id);
 
-        if (task == null) {
-            return null;
-        }
-
         task.setTitle(newTitle);
         task.setPriority(newPriority);
 

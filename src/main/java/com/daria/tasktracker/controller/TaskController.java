@@ -72,9 +72,6 @@ public class TaskController {
     public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody UpdateTaskRequest request) {
         Task task = taskService.editTask(id, request.getTitle(), request.getPriority());
 
-        if (task == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(task);
     }
 
