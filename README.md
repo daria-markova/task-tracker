@@ -1,44 +1,66 @@
 # Task Tracker (Java Console App)
 
 ## 
-A console-based task management application that allows users to create, update, delete, and track tasks. The project demonstrates object-oriented programming principles, clean architecture, and backend development fundamentals.
+A task management REST API that allows users to create, update, delete, and manage tasks. The project demonstrates object-oriented programming principles, REST API development, exception handling, and backend development fundamentals.
+
 ## Features
-- Add new tasks
-- Mark tasks as in progress
-- Mark tasks as done
-- Delete tasks
-- View all tasks
-- Filter tasks by:
-    - Status (to do/in progress/done)
-    - Priority (low/medium/high).
-  
-## Tech Stack
-- Java 24
-- Maven
-- OOP (Encapsulation, Abstraction)
-- Collections (ArrayList)
-- Git / GitHub
+Create new tasks
+Get all tasks
+Get a task by ID
+Update tasks
+Start tasks
+Mark tasks as done
+Delete tasks
+Search tasks by title
+Filter tasks by:
+Status (TODO/IN_PROGRESS/DONE)
+Priority (LOW/MEDIUM/HIGH)
+Get overdue tasks
+Persistent task storage in JSON
+Automatic task ID generation
+Handle errors with custom exceptions
+Tech Stack
+Java 24
+Spring Boot
+Spring Web
+Maven
+Jackson
+OOP (Encapsulation, Abstraction)
+Collections (ArrayList)
+REST API
+JSON
+Git / GitHub
 
 ## Project Structure
+
 src/main/java
-├── app → Main class (UI / menu)
+├── controller → REST API endpoints (TaskController)
+├── dto → Request DTOs for creating and updating tasks
 ├── model → Task model + enums
 ├── service → Business logic (TaskService)
+├── exception → Custom exceptions and global exception handler
 
 ## Getting Started
-1. Clone repository:
+Clone repository:
 https://github.com/daria-markova/task-tracker.git
-2. Open project in IntelliJ IDEA
-3. Run:
-Main.java
+Open project in IntelliJ IDEA
+Run the Spring Boot application
+The API will be available at:
+http://localhost:8080
 
 ## What I learned
-- Java OOP basics
-- Working with collections
-- Git workflow 
+Building REST APIs with Spring Boot
+Working with HTTP methods and status codes
+Separating controller and service responsibilities
+Exception handling with @RestControllerAdvice
+Working with DTOs
+JSON data persistence with Jackson
+Working with collections
+Git workflow
 
 ## Future Improvements
-- Save tasks to file / database
-- Add deadlines (LocalDate)
-- Search by keyword
-- Spring Boot API
+Add database persistence (PostgreSQL)
+Add input validation
+Add API documentation with Swagger / OpenAPI
+Add unit and integration tests
+Improve API documentation
