@@ -52,7 +52,9 @@ Clone repository:
 https://github.com/daria-markova/task-tracker.git
 
 Open project in IntelliJ IDEA
+
 Run the Spring Boot application
+
 The API will be available at:
 http://localhost:8080
 
