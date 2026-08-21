@@ -19,8 +19,9 @@ Get overdue tasks
 Persistent task storage in JSON
 Automatic task ID generation
 Handle errors with custom exceptions
-Tech Stack
-Java 24
+
+## Tech Stack
+Java 21
 Spring Boot
 Spring Web
 Maven
