@@ -33,12 +33,19 @@ Git / GitHub
 
 ## Project Structure
 
-src/main/java
-├── controller → REST API endpoints (TaskController)
-├── dto → Request DTOs for creating and updating tasks
-├── model → Task model + enums
-├── service → Business logic (TaskService)
-├── exception → Custom exceptions and global exception handler
+App — contains the main class for the console version (Main)
+
+controller — REST API endpoints (TaskController)
+
+dto — request objects for creating and updating tasks (CreateTaskRequest, UpdateTaskRequest)
+
+exception — custom exceptions and global exception handler (TaskNotFoundException, GlobalExceptionHandler)
+
+model — task model and enums (Task, Priority, Status)
+
+service — business logic and file storage (TaskService, FileStorage)
+
+TaskTrackerApplication — main Spring Boot application class
 
 ## Getting Started
 Clone repository:
