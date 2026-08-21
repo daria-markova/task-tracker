@@ -1,6 +1,5 @@
 # Task Tracker (Java Spring Boot REST API)
 
-## 
 A task management REST API that allows users to create, update, delete, and manage tasks. The project demonstrates object-oriented programming principles, REST API development, exception handling, and backend development fundamentals.
 
 ## Features
