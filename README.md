@@ -60,17 +60,28 @@ http://localhost:8080
 
 ## What I learned
 Building REST APIs with Spring Boot
+
 Working with HTTP methods and status codes
+
 Separating controller and service responsibilities
+
 Exception handling with @RestControllerAdvice
+
 Working with DTOs
+
 JSON data persistence with Jackson
+
 Working with collections
+
 Git workflow
 
 ## Future Improvements
 Add database persistence (PostgreSQL)
+
 Add input validation
+
 Add API documentation with Swagger / OpenAPI
+
 Add unit and integration tests
+
 Improve API documentation
