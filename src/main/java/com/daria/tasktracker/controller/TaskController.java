@@ -5,6 +5,7 @@ import com.daria.tasktracker.dto.UpdateTaskRequest;
 import com.daria.tasktracker.model.Task;
 import com.daria.tasktracker.model.enums.Priority;
 import com.daria.tasktracker.model.enums.Status;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,11 +54,9 @@ public class TaskController {
     }
 
         @PostMapping("/tasks")
-    public ResponseEntity<Task> createTask(@RequestBody CreateTaskRequest request) {
+        public ResponseEntity<Task> createTask(@Valid @RequestBody CreateTaskRequest request) {
 
-        Task task = taskService.addTask(request.getTitle(), request.getPriority(), request.getDeadline()
-        );
-
+        Task task = taskService.addTask(request.getTitle(), request.getPriority(), request.getDeadline());
         return ResponseEntity.status(HttpStatus.CREATED).body(task);
     }
 
@@ -69,7 +68,7 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{id}")
-    public ResponseEntity<Task> updateTask(@PathVariable int id, @RequestBody UpdateTaskRequest request) {
+    public ResponseEntity<Task> updateTask(@PathVariable int id, @Valid @RequestBody UpdateTaskRequest request) {
         Task task = taskService.editTask(id, request.getTitle(), request.getPriority());
 
         return ResponseEntity.ok(task);

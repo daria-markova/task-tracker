@@ -20,8 +20,11 @@ import java.io.IOException;
 
 @Service
 public class TaskService {
-    int nextId = 1;
-    List<Task> tasks = new ArrayList<>();
+    private int nextId = 1;
+    private List<Task> tasks = new ArrayList<>();
+
+    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final File file = new File("tasks.json");
 
     public List<Task> getTasks() {
         return tasks;
@@ -40,75 +43,32 @@ public class TaskService {
 
     }
 
-    public void printTasks() {
-        if (tasks.isEmpty()) {
-            System.out.println("Task list is empty");
-            return;
-        }
-
-        System.out.println("\n================ TASK LIST ================\n");
-
-        for (Task task : tasks) {
-            printTask(task);
-        }
-
-        System.out.println("------------------------------------------\n");
-    }
-
-    private String formatStatus(Status status) {
-        return switch (status) {
-            case TODO -> "TO DO";
-            case IN_PROGRESS -> "IN PROGRESS";
-            case DONE -> "DONE";
-        };
-    }
-
     public Task startTask(int id) {
-        for (Task task : tasks) {
-            if (task.getId() == id) {
+        Task task = findTaskById(id);
 
-                if (task.getStatus() == Status.DONE) {
-                    return task;
-                }
-
-                task.setStatus(Status.IN_PROGRESS);
-                saveTasks();
-                return task;
-            }
-
+        if (task.getStatus() == Status.DONE) {
+            return task;
         }
 
-        return null;
+        task.setStatus(Status.IN_PROGRESS);
+        saveTasks();
+        return task;
     }
 
     public Task markDone(int id) {
-        for (Task task : tasks) {
-            if (task.getId() == id) {
-                task.setStatus(Status.DONE);
-                saveTasks();
-                return task;
-            }
-        }
-        throw new TaskNotFoundException("Task not found");
+        Task task = findTaskById(id);
+
+        task.setStatus(Status.DONE);
+        saveTasks();
+        return task;
     }
 
     public Task deleteTask(int id) {
-        Task taskToDelete = null;
+        Task task = findTaskById(id);
 
-        for (Task task : tasks) {
-            if (task.getId() == id) {
-                taskToDelete = task;
-                break;
-            }
-        }
-
-        if (taskToDelete != null) {
-            tasks.remove(taskToDelete);
-            saveTasks();
-            return taskToDelete;
-        } else {
-            throw new TaskNotFoundException("Task not found");
-        }
+        tasks.remove(task);
+        saveTasks();
+        return task;
     }
 
     public Task findTaskById(int id) {
@@ -142,32 +102,18 @@ public class TaskService {
         return result;
     }
 
-    private void printTask(Task task) {
-        System.out.println("------------------------------------------");
-        System.out.println("ID: " + task.getId());
-        System.out.println("Title: " + task.getTitle());
-        System.out.println("Status: " + formatStatus(task.getStatus()));
-        System.out.println("Priority: " + task.getPriority());
-        if (task.getDeadline() != null) {
-            System.out.println("Deadline: " + task.getDeadline());
-        } else {
-            System.out.println("Deadline: not set");
-        }
-    }
-
     public List<Task> searchByTitle(String keyword) {
         List<Task> result = new ArrayList<>();
+        String searchKeyword = keyword.toLowerCase();
 
         for (Task task : tasks) {
-            if (task.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+            if (task.getTitle().toLowerCase().contains(searchKeyword)) {
                 result.add(task);
             }
         }
-            return result;
+        return result;
     }
 
-    private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    private final File file = new File("tasks.json");
 
     public void saveTasks() {
         try {
@@ -208,9 +154,11 @@ public class TaskService {
 
     public List<Task> showOverdueTasks() {
         List<Task> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
 
         for (Task task : tasks) {
-            if (task.getDeadline() != null && task.getDeadline().isBefore(LocalDate.now()) && task.getStatus() != Status.DONE) {result.add(task);
+            if (task.getDeadline() != null && task.getDeadline().isBefore(today) && task.getStatus() != Status.DONE) {
+                result.add(task);
             }
         }
         return result;

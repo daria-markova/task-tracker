@@ -10,6 +10,8 @@ public class Task {
     private Status status;
     private Priority priority;
 
+    private LocalDate deadline;
+
     public Task() {
     }
 
@@ -43,8 +45,6 @@ public class Task {
     public void setPriority(Priority priority) {
         this.priority = priority;
     }
-
-    private LocalDate deadline;
 
     public LocalDate getDeadline() {
         return deadline;

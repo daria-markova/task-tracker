@@ -1,9 +1,14 @@
 package com.daria.tasktracker.dto;
 
 import com.daria.tasktracker.model.enums.Priority;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class UpdateTaskRequest {
+    @NotBlank(message = "Title must not be blank")
     private String title;
+
+    @NotNull(message = "Priority must not be null")
     private Priority priority;
 
     public String getTitle() {
