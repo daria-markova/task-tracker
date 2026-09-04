@@ -33,8 +33,6 @@ Git / GitHub
 
 ## Project Structure
 
-App — contains the main class for the console version (Main)
-
 controller — REST API endpoints (TaskController)
 
 dto — request objects for creating and updating tasks (CreateTaskRequest, UpdateTaskRequest)
@@ -43,7 +41,7 @@ exception — custom exceptions and global exception handler (TaskNotFoundExcept
 
 model — task model and enums (Task, Priority, Status)
 
-service — business logic and file storage (TaskService, FileStorage)
+service — business logic (TaskService)
 
 TaskTrackerApplication — main Spring Boot application class
 
@@ -78,10 +76,7 @@ Git workflow
 ## Future Improvements
 Add database persistence (PostgreSQL)
 
-Add input validation
-
-Add API documentation with Swagger / OpenAPI
+Add API documentation with Swagger/OpenAPI
 
 Add unit and integration tests
 
-Improve API documentation
