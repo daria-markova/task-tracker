@@ -24,24 +24,33 @@ public class TaskService {
     private List<Task> tasks = new ArrayList<>();
 
     private final ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
-    private final File file = new File("tasks.json");
+
+    private final File file;
+
+    public TaskService() {
+        this.file = new File("tasks.json");
+    }
+
+    public TaskService(File file) {
+        this.file = file;
+    }
 
     public List<Task> getTasks() {
         return tasks;
     }
 
     public Task addTask(String title, Priority priority, LocalDate deadline) {
-        tasks.add(new Task(nextId, title));
-
-        Task task = tasks.get(tasks.size() - 1);
+        Task task = new Task(nextId, title);
         task.setPriority(priority);
         task.setDeadline(deadline);
+
+        tasks.add(task);
         saveTasks();
         nextId++;
 
         return task;
-
     }
+
 
     public Task startTask(int id) {
         Task task = findTaskById(id);

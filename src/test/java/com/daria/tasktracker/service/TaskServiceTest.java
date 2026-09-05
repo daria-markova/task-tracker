@@ -4,8 +4,12 @@ import com.daria.tasktracker.exception.TaskNotFoundException;
 import com.daria.tasktracker.model.Task;
 import com.daria.tasktracker.model.enums.Priority;
 import com.daria.tasktracker.model.enums.Status;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,9 +17,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TaskServiceTest {
+    private File testFile;
+
+    @BeforeEach
+    void setUp() throws IOException {
+        testFile = File.createTempFile("test-tasks", ".json");
+    }
+
+    @AfterEach
+    void tearDown() {
+        testFile.delete();
+    }
+
     @Test
     void shouldCreateTask() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         Task task = taskService.addTask("Test task", Priority.HIGH, LocalDate.of(2026, 9, 10));
 
@@ -31,7 +47,7 @@ class TaskServiceTest {
 
     @Test
     void shouldFindTaskById() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         Task createdTask = taskService.addTask("Find me", Priority.MEDIUM, LocalDate.of(2026, 9, 10));
         Task foundTask = taskService.findTaskById(createdTask.getId());
@@ -42,7 +58,7 @@ class TaskServiceTest {
 
     @Test
     void shouldThrowExceptionWhenTaskNotFound() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         assertThrows(TaskNotFoundException.class, () -> taskService.findTaskById(999));
     }
@@ -59,7 +75,7 @@ class TaskServiceTest {
 
     @Test
     void shouldStartTask() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         Task task = taskService.addTask("Start me", Priority.MEDIUM, LocalDate.of(2026, 9, 10));
         taskService.startTask(task.getId());
@@ -69,7 +85,7 @@ class TaskServiceTest {
 
     @Test
     void shouldNotStartCompletedTask() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         Task task = taskService.addTask("Completed task", Priority.HIGH, LocalDate.of(2026, 9, 10));
 
@@ -81,7 +97,7 @@ class TaskServiceTest {
 
     @Test
     void shouldDeleteTask() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         Task task = taskService.addTask("Delete me", Priority.LOW, LocalDate.of(2026, 9, 10));
 
@@ -92,7 +108,7 @@ class TaskServiceTest {
 
     @Test
     void shouldEditTask() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         Task task = taskService.addTask("Old title", Priority.LOW, LocalDate.of(2026, 9, 10));
 
@@ -103,8 +119,15 @@ class TaskServiceTest {
     }
 
     @Test
+    void shouldThrowExceptionWhenEditingTaskNotFound() {
+        TaskService taskService = new TaskService(testFile);
+
+        assertThrows(TaskNotFoundException.class, () -> taskService.editTask(999, "New title", Priority.HIGH));
+    }
+
+    @Test
     void shouldFindTasksByTitle() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         taskService.addTask("Buy milk", Priority.MEDIUM, LocalDate.of(2026, 9, 10));
 
@@ -117,7 +140,7 @@ class TaskServiceTest {
 
     @Test
     void shouldFindTasksByStatus() {
-        TaskService taskService = new TaskService();
+        TaskService taskService = new TaskService(testFile);
 
         Task firstTask = taskService.addTask("First task", Priority.MEDIUM, LocalDate.of(2026, 9, 10));
 

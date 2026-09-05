@@ -53,8 +53,8 @@ public class TaskController {
         return taskService.showOverdueTasks();
     }
 
-        @PostMapping("/tasks")
-        public ResponseEntity<Task> createTask(@Valid @RequestBody CreateTaskRequest request) {
+    @PostMapping("/tasks")
+    public ResponseEntity<Task> createTask(@Valid @RequestBody CreateTaskRequest request) {
 
         Task task = taskService.addTask(request.getTitle(), request.getPriority(), request.getDeadline());
         return ResponseEntity.status(HttpStatus.CREATED).body(task);
@@ -85,9 +85,6 @@ public class TaskController {
     public ResponseEntity<Void> startTask(@PathVariable int id) {
         Task task = taskService.startTask(id);
 
-        if (task == null) {
-            return ResponseEntity.notFound().build();
-        }
 
         if (task.getStatus() == Status.DONE) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
