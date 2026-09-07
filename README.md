@@ -1,6 +1,6 @@
 # Task Tracker (Java Spring Boot REST API)
 
-A task management REST API that allows users to create, update, delete, and manage tasks. The project demonstrates object-oriented programming principles, REST API development, exception handling, and backend development fundamentals.
+A task management REST API that allows users to create, update, delete, and manage tasks. The project demonstrates REST API development, object-oriented programming, database integration, validation, and exception handling.
 
 ## Features
 - Create new tasks
@@ -15,8 +15,8 @@ A task management REST API that allows users to create, update, delete, and mana
       - Status (TODO/IN_PROGRESS/DONE)
       - Priority (LOW/MEDIUM/HIGH)
 - Get overdue tasks
-- Persistent task storage in JSON
-- Automatic task ID generation
+- Persistent task storage with PostgreSQL
+- Automatic task ID generation by the database
 - Input validation
 - Custom exception handling
 
@@ -24,13 +24,13 @@ A task management REST API that allows users to create, update, delete, and mana
 - Java 21
 - Spring Boot 
 - Spring Web
+- Spring Data JPA
 - Spring Validation
+- PostgreSQL
 - Maven
-- Jackson
+- JUnit
 - OOP (Encapsulation, Abstraction)
-- Collections (ArrayList)
 - REST API
-- JSON
 - Git / GitHub
 
 ## Project Structure
@@ -42,33 +42,39 @@ exception → custom exceptions and global exception handler
 
 model → task model and enums 
 
-service → business logic and task storage
+service → business logic 
 
 TaskTrackerApplication → main Spring Boot application class
 
 ## Getting Started
-1) Clone repository:
+1) Clone the repository:
 https://github.com/daria-markova/task-tracker.git
+2) Create a PostgreSQL database named task_tracker.
+3) Set the DB_PASSWORD environment variable with your PostgreSQL password.
+4) Open the project in IntelliJ IDEA.
+5) Run the Spring Boot application.
+6) The API will be available at http://localhost:8080.
 
-2) Open project in IntelliJ IDEA
+## Tests
+The project includes repository, service, and controller tests.
 
-3) Run the Spring Boot application
-
-4) The API will be available at:
-http://localhost:8080
+The tests use a separate PostgreSQL database:
+task_tracker_test
 
 ## What I learned
 - Building REST APIs with Spring Boot
 - Working with HTTP methods and status codes
 - Separating controller and service responsibilities
-- Exception handling with @RestControllerAdvice
+- Working with Spring Data JPA
+- Connecting a Spring Boot application to PostgreSQL
 - Working with DTOs
 - Input validation
-- JSON data persistence with Jackson
-- Working with collections
+- Exception handling with @RestControllerAdvice
+- Writing repository, service, and controller tests
 - Git workflow
 
 ## Future Improvements
-- Add database persistence with PostgreSQL
+- Add task history
 - Add API documentation with Swagger / OpenAPI
-- Add unit and integration tests
+- Add Docker support
+- Improve database queries with Spring Data JPA
