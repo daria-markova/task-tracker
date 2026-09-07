@@ -4,52 +4,46 @@ import com.daria.tasktracker.exception.TaskNotFoundException;
 import com.daria.tasktracker.model.Task;
 import com.daria.tasktracker.model.enums.Priority;
 import com.daria.tasktracker.model.enums.Status;
-import org.junit.jupiter.api.AfterEach;
+import com.daria.tasktracker.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class TaskServiceTest {
-    private File testFile;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @BeforeEach
-    void setUp() throws IOException {
-        testFile = File.createTempFile("test-tasks", ".json");
-    }
-
-    @AfterEach
-    void tearDown() {
-        testFile.delete();
+    void setUp() {
+        taskRepository.deleteAll();
     }
 
     @Test
     void shouldCreateTask() {
-        TaskService taskService = new TaskService(testFile);
-
         Task task = taskService.addTask("Test task", Priority.HIGH, LocalDate.of(2026, 9, 10));
 
         assertEquals("Test task", task.getTitle());
         assertEquals(Priority.HIGH, task.getPriority());
         assertEquals(LocalDate.of(2026, 9, 10), task.getDeadline());
-        assertEquals(1, task.getId());
-
-        Task secondTask = taskService.addTask("Second test task", Priority.LOW, LocalDate.of(2026, 9, 15));
-
-        assertEquals(2, secondTask.getId());
+        assertEquals(Status.TODO, task.getStatus());
+        assertTrue(task.getId() > 0);
     }
 
     @Test
     void shouldFindTaskById() {
-        TaskService taskService = new TaskService(testFile);
-
         Task createdTask = taskService.addTask("Find me", Priority.MEDIUM, LocalDate.of(2026, 9, 10));
+
         Task foundTask = taskService.findTaskById(createdTask.getId());
 
         assertEquals(createdTask.getId(), foundTask.getId());
@@ -58,47 +52,39 @@ class TaskServiceTest {
 
     @Test
     void shouldThrowExceptionWhenTaskNotFound() {
-        TaskService taskService = new TaskService(testFile);
-
         assertThrows(TaskNotFoundException.class, () -> taskService.findTaskById(999));
     }
 
     @Test
     void shouldMarkTaskAsDone() {
-        TaskService taskService = new TaskService();
-
         Task task = taskService.addTask("Complete me", Priority.HIGH, LocalDate.of(2026, 9, 10));
+
         taskService.markDone(task.getId());
 
-        assertEquals(Status.DONE, task.getStatus());
+        assertEquals(Status.DONE, taskService.findTaskById(task.getId()).getStatus());
     }
 
     @Test
     void shouldStartTask() {
-        TaskService taskService = new TaskService(testFile);
-
         Task task = taskService.addTask("Start me", Priority.MEDIUM, LocalDate.of(2026, 9, 10));
+
         taskService.startTask(task.getId());
 
-        assertEquals(Status.IN_PROGRESS, task.getStatus());
+        assertEquals(Status.IN_PROGRESS, taskService.findTaskById(task.getId()).getStatus());
     }
 
     @Test
     void shouldNotStartCompletedTask() {
-        TaskService taskService = new TaskService(testFile);
-
         Task task = taskService.addTask("Completed task", Priority.HIGH, LocalDate.of(2026, 9, 10));
 
         taskService.markDone(task.getId());
         taskService.startTask(task.getId());
 
-        assertEquals(Status.DONE, task.getStatus());
+        assertEquals(Status.DONE, taskService.findTaskById(task.getId()).getStatus());
     }
 
     @Test
     void shouldDeleteTask() {
-        TaskService taskService = new TaskService(testFile);
-
         Task task = taskService.addTask("Delete me", Priority.LOW, LocalDate.of(2026, 9, 10));
 
         taskService.deleteTask(task.getId());
@@ -108,27 +94,23 @@ class TaskServiceTest {
 
     @Test
     void shouldEditTask() {
-        TaskService taskService = new TaskService(testFile);
-
         Task task = taskService.addTask("Old title", Priority.LOW, LocalDate.of(2026, 9, 10));
 
         taskService.editTask(task.getId(), "New title", Priority.HIGH);
 
-        assertEquals("New title", task.getTitle());
-        assertEquals(Priority.HIGH, task.getPriority());
+        Task updatedTask = taskService.findTaskById(task.getId());
+
+        assertEquals("New title", updatedTask.getTitle());
+        assertEquals(Priority.HIGH, updatedTask.getPriority());
     }
 
     @Test
     void shouldThrowExceptionWhenEditingTaskNotFound() {
-        TaskService taskService = new TaskService(testFile);
-
         assertThrows(TaskNotFoundException.class, () -> taskService.editTask(999, "New title", Priority.HIGH));
     }
 
     @Test
     void shouldFindTasksByTitle() {
-        TaskService taskService = new TaskService(testFile);
-
         taskService.addTask("Buy milk", Priority.MEDIUM, LocalDate.of(2026, 9, 10));
 
         taskService.addTask("Buy sweets", Priority.LOW, LocalDate.of(2026, 9, 15));
@@ -140,8 +122,6 @@ class TaskServiceTest {
 
     @Test
     void shouldFindTasksByStatus() {
-        TaskService taskService = new TaskService(testFile);
-
         Task firstTask = taskService.addTask("First task", Priority.MEDIUM, LocalDate.of(2026, 9, 10));
 
         taskService.addTask("Second task", Priority.LOW, LocalDate.of(2026, 9, 15));
@@ -156,8 +136,6 @@ class TaskServiceTest {
 
     @Test
     void shouldFindTasksByPriority() {
-        TaskService taskService = new TaskService();
-
         Task firstTask = taskService.addTask("Important task", Priority.HIGH, LocalDate.of(2026, 9, 10));
 
         taskService.addTask("Normal task", Priority.LOW, LocalDate.of(2026, 9, 15));
@@ -170,8 +148,6 @@ class TaskServiceTest {
 
     @Test
     void shouldFindOverdueTasks() {
-        TaskService taskService = new TaskService();
-
         Task overdueTask = taskService.addTask("Overdue task", Priority.HIGH, LocalDate.of(2026, 9, 3));
 
         taskService.addTask("Future task", Priority.LOW, LocalDate.of(2026, 9, 10));
