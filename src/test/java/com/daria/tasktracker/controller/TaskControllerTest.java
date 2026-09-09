@@ -93,10 +93,6 @@ public class TaskControllerTest {
 
     @Test
     void shouldDeleteTask() throws Exception {
-        Task task = new Task(1, "Test task");
-
-        when(taskService.deleteTask(1)).thenReturn(task);
-
         mockMvc.perform(delete("/tasks/1")).andExpect(status().isNoContent());
     }
 

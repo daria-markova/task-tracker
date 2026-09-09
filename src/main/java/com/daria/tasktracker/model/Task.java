@@ -4,6 +4,8 @@ import com.daria.tasktracker.model.enums.Status;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Task {
@@ -20,6 +22,9 @@ public class Task {
     private Priority priority;
 
     private LocalDate deadline;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaskHistory> history = new ArrayList<>();
 
     public Task() {
     }

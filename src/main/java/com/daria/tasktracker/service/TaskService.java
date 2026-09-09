@@ -1,6 +1,8 @@
 package com.daria.tasktracker.service;
 
 import com.daria.tasktracker.exception.TaskNotFoundException;
+import com.daria.tasktracker.model.TaskHistory;
+import com.daria.tasktracker.repository.TaskHistoryRepository;
 import com.daria.tasktracker.repository.TaskRepository;
 import com.daria.tasktracker.model.Task;
 import com.daria.tasktracker.model.enums.Priority;
@@ -16,9 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final TaskHistoryRepository taskHistoryRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, TaskHistoryRepository taskHistoryRepository) {
         this.taskRepository = taskRepository;
+        this.taskHistoryRepository = taskHistoryRepository;
     }
 
     public List<Task> getTasks() {
@@ -27,34 +31,48 @@ public class TaskService {
 
     public Task addTask(String title, Priority priority, LocalDate deadline) {
         Task task = new Task(title, priority, deadline);
+        Task savedTask = taskRepository.save(task);
 
-        return taskRepository.save(task);
+        TaskHistory history = new TaskHistory("CREATED");
+        history.setTask(savedTask);
+        taskHistoryRepository.save(history);
+
+        return savedTask;
     }
-
 
     public Task startTask(int id) {
         Task task = findTaskById(id);
 
-        if (task.getStatus() == Status.DONE) {
+        if (task.getStatus() != Status.TODO) {
             return task;
         }
 
         task.setStatus(Status.IN_PROGRESS);
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        TaskHistory history = new TaskHistory("STARTED");
+        history.setTask(savedTask);
+        taskHistoryRepository.save(history);
+
+        return savedTask;
     }
 
     public Task markDone(int id) {
         Task task = findTaskById(id);
 
         task.setStatus(Status.DONE);
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+
+        TaskHistory history = new TaskHistory("COMPLETED");
+        history.setTask(savedTask);
+        taskHistoryRepository.save(history);
+
+        return savedTask;
     }
 
-    public Task deleteTask(int id) {
+    public void deleteTask(int id) {
         Task task = findTaskById(id);
-
         taskRepository.delete(task);
-        return task;
     }
 
     public Task findTaskById(int id) {
@@ -62,38 +80,16 @@ public class TaskService {
     }
 
     public List<Task> showByStatus(Status status) {
-        List<Task> result = new ArrayList<>();
-
-        for (Task task : taskRepository.findAll()) {
-            if (task.getStatus() == status) {
-                result.add(task);
-            }
-        }
-        return result;
+        return taskRepository.findByStatus(status);
     }
 
 
     public List<Task> showByPriority(Priority priority) {
-        List<Task> result = new ArrayList<>();
-
-        for (Task task : taskRepository.findAll()) {
-            if (task.getPriority() == priority) {
-                result.add(task);
-            }
-        }
-        return result;
+        return taskRepository.findByPriority(priority);
     }
 
     public List<Task> searchByTitle(String keyword) {
-        List<Task> result = new ArrayList<>();
-        String searchKeyword = keyword.toLowerCase();
-
-        for (Task task : taskRepository.findAll()) {
-            if (task.getTitle().toLowerCase().contains(searchKeyword)) {
-                result.add(task);
-            }
-        }
-        return result;
+        return taskRepository.findByTitleContainingIgnoreCase(keyword);
     }
 
 
@@ -115,6 +111,12 @@ public class TaskService {
             }
         }
         return result;
+    }
+
+    public List<TaskHistory> getTaskHistory(int taskId) {
+        findTaskById(taskId);
+
+        return taskHistoryRepository.findByTaskId(taskId);
     }
 
 }

@@ -3,6 +3,7 @@ package com.daria.tasktracker.controller;
 import com.daria.tasktracker.dto.CreateTaskRequest;
 import com.daria.tasktracker.dto.UpdateTaskRequest;
 import com.daria.tasktracker.model.Task;
+import com.daria.tasktracker.model.TaskHistory;
 import com.daria.tasktracker.model.enums.Priority;
 import com.daria.tasktracker.model.enums.Status;
 import jakarta.validation.Valid;
@@ -51,6 +52,11 @@ public class TaskController {
     @GetMapping("/tasks/overdue")
     public List<Task> getOverdueTasks() {
         return taskService.showOverdueTasks();
+    }
+
+    @GetMapping("/tasks/{id}/history")
+    public List<TaskHistory> getTaskHistory(@PathVariable int id) {
+        return taskService.getTaskHistory(id);
     }
 
     @PostMapping("/tasks")
