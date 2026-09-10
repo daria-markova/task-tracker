@@ -53,6 +53,7 @@ repository   → Spring Data JPA repositories
 
 service      → business logic
 
+
 TaskTrackerApplication → main Spring Boot application class
 
 ## Getting Started
