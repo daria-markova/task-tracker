@@ -42,8 +42,8 @@ A task management REST API for creating, updating, and managing tasks. The proje
 ## Project Structure
 
 controller   → REST API endpoints
-dto          → request objects for creating and updating tasks
-exception    → custom exceptions and global exception handler
+dto          → request objects
+exception    → custom exceptions and global handler
 model        → entities and enums
 repository   → Spring Data JPA repositories
 service      → business logic
